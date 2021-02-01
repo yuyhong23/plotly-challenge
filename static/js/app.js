@@ -1,44 +1,42 @@
-// Fetch the JSON data and console log it
-d3.json("/samples.json").then(function(data) {
+// This function is called when a dropdown menu item is selected
+function updatePlotly() {
+  // Use D3 to select the dropdown menu
+  var dropdownMenu = d3.select("#selDataset");
+  // Assign the value of the dropdown menu option to a variable
+  var dataset = dropdownMenu.property("value");
 
-    // Display the data to understand
-    //console.log(data);
+  buildPlot(sample);
+}
 
-    var id1 = data.samples[0];
-    //console.log(id);
+// Fetch the JSON data 
+function buildPlot(sample){
+  d3.json("/samples.json").then(function(data) {
+      // Display the data to understand
+      //console.log(data);
 
-    var sampleValue1 = id1.sample_values;
-    //console.log(sampleValue1);
+      // Append the options to the dropdown menu
+      var dropDown = d3.select("#selData");
+      dropDown.append("option").attr("value", ).text();
 
-    var value1Sorted = sampleValue1.sort((first, second) => 
-        second - first);
-    //console.log(value1Sorted); 
+      // Get the samples data
+      var id1 = data.samples[0];
+      //console.log(id);
 
-    var value1Top = value1Sorted.slice(0, 10);
-    console.log(value1Top); 
+      // Extract the sample_values from the samples data
+      var sampleValue1 = id1.sample_values;
+      //console.log(sampleValue1);
 
+      // Sort data for from most to least
+      var value1Sorted = sampleValue1.sort((first, second) => 
+          second - first);
+      //console.log(value1Sorted); 
 
-    // Get the samples data
-    // var sampleData1 = [];
-    // Object.entries(data.samples[0]).forEach(([key, value]) =>{
-    //     sampleData.push(value);
-    //     })
-    // console.log(sampleData);
-    
-    // // Extract the sample_values from the samples data
-    // var sampleValues = sampleData.map(x=>x.id);
-    // //console.log(sampleValues);
+      // Use slice to get the top 10 OTUs found in that individual
+      var value1Top = value1Sorted.slice(0, 10);
+      console.log(value1Top); 
 
-    // // Sort data for from most to least
-    // var sampleSorted = sampleValues.sort((first, second) => 
-    // second - first);
-    // //console.log(sampleSorted);
-
-    // // Use slice to get the top 10 OTUs found in that individual
-    // var sample_values = sampleSorted.slice(0,10);
-    // console.log(sample_values);
   })
+}
 
-// Sort data for the top 10 OTUs found in that individual
-// var sortedData = data.sort((first, second) => 
-//     second.greekSearchResults - first.greekSearchResults);
+// Call updatePlotly() when a change takes place to the DOM
+d3.selectAll("#selDataset").on("change", updatePlotly);
