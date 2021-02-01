@@ -6,34 +6,42 @@ function updatePlotly() {
   var dataset = dropdownMenu.property("value");
 
   buildPlot(sample);
+
 }
 
 // Fetch the JSON data 
 function buildPlot(sample){
   d3.json("/samples.json").then(function(data) {
-      // Display the data to understand
-      //console.log(data);
+    // Display the data to understand
+    //console.log(data);
 
-      // Append the options to the dropdown menu
-      var dropDown = d3.select("#selData");
-      dropDown.append("option").attr("value", ).text();
+    // Extract the names
+    var names = data.names;
+    //console.log(names);
 
-      // Get the samples data
-      var id1 = data.samples[0];
-      //console.log(id);
+    // Append the options to the dropdown menu
+    names.forEach(x => {
+      var dropDown = d3.select("#selDataset");
+      var selectOption = dropDown.append("option");
+      selectOption.attr("value", x).text(x);
+    })
 
-      // Extract the sample_values from the samples data
-      var sampleValue1 = id1.sample_values;
-      //console.log(sampleValue1);
+    // Get the samples data
+    var id1 = data.samples[0];
+    //console.log(id);
 
-      // Sort data for from most to least
-      var value1Sorted = sampleValue1.sort((first, second) => 
-          second - first);
-      //console.log(value1Sorted); 
+    // Extract the sample_values from the samples data
+    var sampleValue1 = id1.sample_values;
+    //console.log(sampleValue1);
 
-      // Use slice to get the top 10 OTUs found in that individual
-      var value1Top = value1Sorted.slice(0, 10);
-      console.log(value1Top); 
+    // Sort data for from most to least
+    var value1Sorted = sampleValue1.sort((first, second) => 
+      second - first);
+    //console.log(value1Sorted); 
+
+    // Use slice to get the top 10 OTUs found in that individual
+    var value1Top = value1Sorted.slice(0, 10);
+    console.log(value1Top); 
 
   })
 }
