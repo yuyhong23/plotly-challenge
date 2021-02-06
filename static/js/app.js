@@ -23,21 +23,34 @@
     var sampleValue1 = id1.sample_values;
     //console.log(sampleValue1);
 
-    // Use slice to get the top 10 OTUs found in that individual
-    var value1Sorted = sampleValue1.slice(0, 10);
+    // Use slice to get the top 10 OTU values found in that individual
+    // Use reverse so the graph descend from more to less
+    var value1Sorted = (sampleValue1.slice(0, 10)).reverse();
     console.log(value1Sorted); 
 
+    // Use slice to get the top 10 OTU ids found in that individual
+    // Use reverse so the graph descend from more to less
+    // Convert the ids to string
     var outIds1 = id1.otu_ids;
-    var slicedOutIds1 =  (outIds1.slice(0,10)).toString();
+    var slicedOutIds1 =  ((outIds1.slice(0,10))).reverse();
     console.log(slicedOutIds1);
 
+    var slicedOutIdsConvert1 = [];
+    for (var i = 0; i < slicedOutIds1.length; i ++){
+      var newI = `OTU ${slicedOutIds1[i].toString()}`;
+      slicedOutIdsConvert1.push(newI);
+    }
+    console.log(slicedOutIdsConvert1);
+
+    // Use slice to get the top 10 OTU labels found in that individual
+    // Use reverse so the graph descend from more to less
     var outlabels1 = id1.otu_labels;
-    var slicedOutlabels1 =  outlabels1.slice(0,10);
+    var slicedOutlabels1 =  (outlabels1.slice(0,10)).reverse();
     console.log(slicedOutlabels1);
 
     var trace1 = {
       x: value1Sorted,
-      y: slicedOutIds1,
+      y: slicedOutIdsConvert1,
       text:slicedOutlabels1,
       type: "bar",
       orientation: "h"
@@ -51,11 +64,15 @@
           automargin: true
       },
       yaxis: {
-          title: "OTU IDs"
+          title: "OTU IDs",
+          automargin: true
       },
+      autosize: false,
+      width: 350,
+      height: 600
   };
   
-  Plotly.newPlot("plot", [trace1], layout);
+  Plotly.newPlot("bar", [trace1], layout);
 
 })
 //}
