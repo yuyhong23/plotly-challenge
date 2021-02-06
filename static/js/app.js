@@ -1,9 +1,7 @@
-// // Fetch the JSON data 
-// function buildPlot(sample){
+// Initializes the page with a default plot
+// Also for setting up the dropdown buttons
+function init() {
   d3.json("/samples.json").then(function(data) {
-    // Display the data to understand
-    //console.log(data);
-
     // Extract the names
     var names = data.names;
     //console.log(names);
@@ -15,71 +13,54 @@
       selectOption.attr("value", x).text(x);
     })
 
-    // Get the samples data
-    var id1 = data.samples[0];
-    console.log(id1);
+    // Show the first id's charts
+    optionChanged(names[0]);
+  })
+}
 
-    // Extract the sample_values from the samples data
-    var sampleValue1 = id1.sample_values;
-    //console.log(sampleValue1);
+// Data and charts will change based on the id selected
+function optionChanged(id){
+  buildCharts(id);
+}
 
-    // Use slice to get the top 10 OTU values found in that individual
-    // Use reverse so the graph descend from more to less
-    var value1Sorted = (sampleValue1.slice(0, 10)).reverse();
-    console.log(value1Sorted); 
+// Data to use for building the charts
+function forAllCharts(id){
+  d3.json("/samples.json").then(function(data) {
+  // Display the data to understand
+    // console.log(data);
 
-    // Use slice to get the top 10 OTU ids found in that individual
-    // Use reverse so the graph descend from more to less
-    // Convert the ids to string
-    var outIds1 = id1.otu_ids;
-    var slicedOutIds1 =  ((outIds1.slice(0,10))).reverse();
-    console.log(slicedOutIds1);
+  // Set up filter based on id selected
+  var filteredSamples = data.samples.filter(d=>d.id===id);
+  var filteredMeta = data.metadata.filter(d=>d.id===id);
 
-    var slicedOutIdsConvert1 = [];
-    for (var i = 0; i < slicedOutIds1.length; i ++){
-      var newI = `OTU ${slicedOutIds1[i].toString()}`;
-      slicedOutIdsConvert1.push(newI);
-    }
-    console.log(slicedOutIdsConvert1);
+  // Extract the sample_values from the samples data
+  var sampleValue = filteredSamples.sample_values;
+  //console.log(sampleValue1);
 
-    // Use slice to get the top 10 OTU labels found in that individual
-    // Use reverse so the graph descend from more to less
-    var outlabels1 = id1.otu_labels;
-    var slicedOutlabels1 =  (outlabels1.slice(0,10)).reverse();
-    console.log(slicedOutlabels1);
+  // Use slice to get the top 10 OTU values found in that individual
+  // Use reverse so the graph descend from more to less
+  var valueSorted = (sampleValue.slice(0, 10)).reverse();
+  console.log(valueSorted); 
 
-    var trace1 = {
-      x: value1Sorted,
-      y: slicedOutIdsConvert1,
-      text:slicedOutlabels1,
-      type: "bar",
-      orientation: "h"
-    };
+  // Use slice to get the top 10 OTU ids found in that individual
+  // Use reverse so the graph descend from more to less
+  // Convert the ids to string
+  var outIds = filteredSamples.otu_ids;
+  var slicedOutIds =  ((outIds.slice(0,10))).reverse();
+  console.log(slicedOutIds);
 
-    var layout ={
-      title: "Bar Chart",
-      xaxis: {
-          title: "Sample Values",
-          tickangle: -45,
-          automargin: true
-      },
-      yaxis: {
-          title: "OTU IDs",
-          automargin: true
-      },
-      autosize: false,
-      width: 350,
-      height: 600
-  };
-  
-  Plotly.newPlot("bar", [trace1], layout);
+  var slicedOutIdsConvert = [];
+  for (var i = 0; i < slicedOutIds.length; i ++){
+    var newI = `OTU ${slicedOutIds[i].toString()}`;
+    slicedOutIdsConvert.push(newI);
+  }
+  console.log(slicedOutIdsConvert);
 
+  // Use slice to get the top 10 OTU labels found in that individual
+  // Use reverse so the graph descend from more to less
+  var outlabels = filteredSamples.otu_labels;
+  var slicedOutlabels =  (outlabels.slice(0,10)).reverse();
+  console.log(slicedOutlabels);
 })
-//}
+}
 
-// Using the onchange from the html
-// function optionChanged(id){
-//   console.log(id);
-//   filtered = data.filter(d=>d.id===id);
-//   newFunctionforChart(filtered);
-// }
