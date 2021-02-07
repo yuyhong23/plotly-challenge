@@ -4,7 +4,7 @@
 // Initializes the page with a default plot
 // Also for setting up the dropdown buttons
 function init() {
-  d3.json("./samples.json").then(function(data) {
+  d3.json("/samples.json").then(function(data) {
     // Extract the names
     var names = data.names;
     //console.log(names);
@@ -29,7 +29,7 @@ function optionChanged(id){
 
 // Data to use for building the charts
 function buildCharts(id){
-  d3.json("./samples.json").then(function(data) {
+  d3.json("/samples.json").then(function(data) {
   // Display the data to understand
     console.log(data);
 
