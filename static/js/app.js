@@ -77,13 +77,16 @@ function buildCharts(id){
   var bubble_otuLabels = filteredSamples.map(x=>x.otu_labels)[0];
   console.log(bubble_otuLabels);
 
+  // Demographic Info //
+
   // Set up filter based on id selected for 
-  var filteredMeta = data.metadata.filter(d=>d.id===id);
-  // console.log(filteredMeta);
+  var filteredMeta = data.metadata.filter(d=>d.id==id);
+  console.log(filteredMeta);
 
   // Call on the barChart function
   barChart(valueSorted, slicedOutIdsConvert, outLabelsSorted);
   bubbleChart(bubble_otuIds, bubble_samples, bubble_otuLabels);
+  demoInfo (filteredMeta);
 })
 }
 
@@ -148,6 +151,15 @@ function bubbleChart (xValue, yValue, textValue){
   };
   
   Plotly.newPlot('bubble', data, layout);
+}
+
+function demoInfo (data){
+  var panelBody = d3.select("#sample-metadata");
+  data.forEach(x=> {
+    Object.entries(x).forEach(([key, value])=>{
+      panelBody.append("div").text(key + ": " + value);
+    })
+  })
 }
 
 // Call on the function init()
