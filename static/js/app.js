@@ -1,4 +1,5 @@
-// // Read the samples.json so 
+// using ./samples instead of the url
+// // Read the samples.json 
 // const url = "https://yuyhong23.github.io/plotly-challenge/samples.json";
 
 // Initializes the page with a default plot
@@ -109,6 +110,9 @@ function barChart (xValue, yValue, textName){
   };
 
   var layout ={
+    "titlefont":{
+      "size":24
+    },
     title: "Bar Chart",
     xaxis: {
         title: "Sample Values",
@@ -144,6 +148,9 @@ function bubbleChart (xValue, yValue, textValue){
   var data = [trace1];
   
   var layout = {
+    "titlefont":{
+      "size":24
+    },
     title: 'Bubble Chart',
     showlegend: false,
     xaxis: {
@@ -178,16 +185,30 @@ function gaugeChart (data){
     {
       domain: { x: [0, 1], y: [0, 1] },
       value: data,
-      title: { text: "Gauge Chart" },
+      title: { text: "Scrubs per Week" },
       type: "indicator",
-      mode: "gauge+number"
+      mode: "gauge+number",
+      gauge: {
+        bar: { color: "PaleGreen" },
+        axis: { range: [0, 9] },
+        steps: [
+          { range: [0, 1], color: "lightcyan"},
+          { range: [1, 2], color: "paleturquoise"},
+          { range: [2, 3], color: "aquamarine"},
+          { range: [3, 4], color: "turquoise"},
+          { range: [4, 5], color: "mediumaquamarine"},
+          { range: [5, 6], color: "mediumseagreen"},
+          { range: [6, 7], color: "lawngreen"},
+          { range: [7, 8], color: "limegreen"},
+          { range: [8, 9], color: "seagreen" }
+        ]
+      }
     }
-  ];
-  
+  ]; 
+
   var layout = { width: 500, height: 400, margin: { t: 0, b: 0 } };
   Plotly.newPlot('gauge', data, layout);
 }
-
 
 // Call on the function init()
 init();
