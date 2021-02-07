@@ -113,7 +113,7 @@ function barChart (xValue, yValue, textName){
     "titlefont":{
       "size":24
     },
-    title: "Bar Chart",
+    title: "Top 10 OTUs Bar Chart",
     xaxis: {
         title: "Sample Values",
         tickangle: -45,
@@ -151,7 +151,7 @@ function bubbleChart (xValue, yValue, textValue){
     "titlefont":{
       "size":24
     },
-    title: 'Bubble Chart',
+    title: 'Bubble Chart for Each Sample',
     showlegend: false,
     xaxis: {
       title: "OTU IDs",
