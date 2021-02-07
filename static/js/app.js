@@ -29,7 +29,7 @@ function optionChanged(id){
 
 // Data to use for building the charts
 function buildCharts(id){
-  d3.json("/samples.json").then(function(data) {
+  d3.json(url).then(function(data) {
   // Display the data to understand
     console.log(data);
 
