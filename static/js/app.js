@@ -65,14 +65,17 @@ function buildCharts(id){
   console.log(outLabelsSorted);
 
   // Bubble Chart Values //
+  // Get all sample values
   var bubble_samples = filteredSamples.map(x=>x.sample_values)[0];
   console.log(bubble_samples);
 
+  // Get all otu ids
   var bubble_otuIds = filteredSamples.map(x=>x.otu_ids)[0];
   console.log(bubble_otuIds);
 
-  var bubble_outLabels = filteredSamples.map(x=>x.otu_labels)[0];
-  console.log(bubble_outLabels);
+  // Get all otu labels
+  var bubble_otuLabels = filteredSamples.map(x=>x.otu_labels)[0];
+  console.log(bubble_otuLabels);
 
   // Set up filter based on id selected for 
   var filteredMeta = data.metadata.filter(d=>d.id===id);
@@ -80,7 +83,7 @@ function buildCharts(id){
 
   // Call on the barChart function
   barChart(valueSorted, slicedOutIdsConvert, outLabelsSorted);
-  bubbleChart(bubble_otuIds, bubble_samples, bubble_outLabels);
+  bubbleChart(bubble_otuIds, bubble_samples, bubble_otuLabels);
 })
 }
 
@@ -122,7 +125,8 @@ function bubbleChart (xValue, yValue, textValue){
     mode: 'markers',
     marker: {
       color: xValue,
-      size: yValue
+      size: yValue,
+      colorscale: "Jet"
     }
   };
   
@@ -139,8 +143,8 @@ function bubbleChart (xValue, yValue, textValue){
       title: "Sample Values",
       automargin: true
   },
-    height: 500,
-    width: 1000
+    height: 600,
+    width: 1200
   };
   
   Plotly.newPlot('bubble', data, layout);
