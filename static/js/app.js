@@ -1,7 +1,10 @@
+// Read the samples.json so 
+const url = "https://yuyhong23.github.io/plotly-challenge/samples.json";
+
 // Initializes the page with a default plot
 // Also for setting up the dropdown buttons
 function init() {
-  d3.json("/samples.json").then(function(data) {
+  d3.json(url).then(function(data) {
     // Extract the names
     var names = data.names;
     //console.log(names);
