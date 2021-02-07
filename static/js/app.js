@@ -13,6 +13,7 @@ function init() {
       selectOption.attr("value", x).text(x);
     })
 
+    // Call on the optionChanged function
     // Show the first id's charts
     optionChanged(names[0]);
   })
@@ -27,11 +28,12 @@ function optionChanged(id){
 function buildCharts(id){
   d3.json("/samples.json").then(function(data) {
   // Display the data to understand
-    // console.log(data);
+    console.log(data);
 
-  // Set up filter based on id selected
+  //Bar Chart values//
+
+  // Set up filter based on id selected for bar chart
   var filteredSamples = data.samples.filter(d=>d.id===id);
-  var filteredMeta = data.metadata.filter(d=>d.id===id);
   console.log(filteredSamples);
   
   // Extract the sample_values from the filtered id samples data
@@ -48,6 +50,7 @@ function buildCharts(id){
   var outIdsSorted = outIds.reverse();
   console.log(outIdsSorted);
 
+  // Change the id to string with the word OTU in front
   var slicedOutIdsConvert = [];
   for (var i = 0; i < outIdsSorted.length; i ++){
     var newI = `OTU ${outIdsSorted[i].toString()}`;
@@ -61,10 +64,27 @@ function buildCharts(id){
   var outLabelsSorted = outLabels.reverse();
   console.log(outLabelsSorted);
 
+  // Bubble Chart Values //
+  var bubble_samples = filteredSamples.map(x=>x.sample_values)[0];
+  console.log(bubble_samples);
+
+  var bubble_otuIds = filteredSamples.map(x=>x.otu_ids)[0];
+  console.log(bubble_otuIds);
+
+  var bubble_outLabels = filteredSamples.map(x=>x.otu_labels)[0];
+  console.log(bubble_outLabels);
+
+  // Set up filter based on id selected for 
+  var filteredMeta = data.metadata.filter(d=>d.id===id);
+  // console.log(filteredMeta);
+
+  // Call on the barChart function
   barChart(valueSorted, slicedOutIdsConvert, outLabelsSorted);
+  bubbleChart(bubble_otuIds, bubble_samples, bubble_outLabels);
 })
 }
 
+// Function to create the bar chart
 function barChart (xValue, yValue, textName){
   var trace1 = {
     x: xValue,
@@ -93,4 +113,38 @@ function barChart (xValue, yValue, textName){
   Plotly.newPlot("bar", [trace1], layout);
 }
 
+// Function to create the bubble chart
+function bubbleChart (xValue, yValue, textValue){
+  var trace1 = {
+    x: xValue,
+    y: yValue,
+    text: textValue,
+    mode: 'markers',
+    marker: {
+      color: xValue,
+      size: yValue
+    }
+  };
+  
+  var data = [trace1];
+  
+  var layout = {
+    title: 'Bubble Chart',
+    showlegend: false,
+    xaxis: {
+      title: "OTU IDs",
+      automargin: true
+  },
+  yaxis: {
+      title: "Sample Values",
+      automargin: true
+  },
+    height: 500,
+    width: 1000
+  };
+  
+  Plotly.newPlot('bubble', data, layout);
+}
+
+// Call on the function init()
 init();
