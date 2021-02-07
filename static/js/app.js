@@ -1,10 +1,10 @@
-// Read the samples.json so 
-const url = "https://yuyhong23.github.io/plotly-challenge/samples.json";
+// // Read the samples.json so 
+// const url = "https://yuyhong23.github.io/plotly-challenge/samples.json";
 
 // Initializes the page with a default plot
 // Also for setting up the dropdown buttons
 function init() {
-  d3.json(url).then(function(data) {
+  d3.json("./samples.json").then(function(data) {
     // Extract the names
     var names = data.names;
     //console.log(names);
@@ -29,7 +29,7 @@ function optionChanged(id){
 
 // Data to use for building the charts
 function buildCharts(id){
-  d3.json(url).then(function(data) {
+  d3.json("./samples.json").then(function(data) {
   // Display the data to understand
     console.log(data);
 
@@ -158,6 +158,7 @@ function bubbleChart (xValue, yValue, textValue){
 
 function demoInfo (data){
   var panelBody = d3.select("#sample-metadata");
+  panelBody.html("");
   data.forEach(x=> {
     Object.entries(x).forEach(([key, value])=>{
       panelBody.append("div").text(key + ": " + value);
