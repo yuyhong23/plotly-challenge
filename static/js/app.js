@@ -4,7 +4,7 @@
 // Initializes the page with a default plot
 // Also for setting up the dropdown buttons
 function init() {
-  d3.json("/samples.json").then(function(data) {
+  d3.json("./samples.json").then(function(data) {
     // Extract the names
     var names = data.names;
     //console.log(names);
@@ -29,7 +29,7 @@ function optionChanged(id){
 
 // Data to use for building the charts
 function buildCharts(id){
-  d3.json("/samples.json").then(function(data) {
+  d3.json("./samples.json").then(function(data) {
   // Display the data to understand
     console.log(data);
 
@@ -86,10 +86,15 @@ function buildCharts(id){
   var filteredMeta = data.metadata.filter(d=>d.id==id);
   console.log(filteredMeta);
 
+  // Gauge Chart //
+  var wfreq = filteredMeta.map(x=>x.wfreq)[0];
+  console.log(wfreq);
+
   // Call on the barChart function
   barChart(valueSorted, slicedOutIdsConvert, outLabelsSorted);
   bubbleChart(bubble_otuIds, bubble_samples, bubble_otuLabels);
   demoInfo (filteredMeta);
+  gaugeChart(wfreq);
 })
 }
 
@@ -158,6 +163,7 @@ function bubbleChart (xValue, yValue, textValue){
 
 function demoInfo (data){
   var panelBody = d3.select("#sample-metadata");
+  // to clear the previous input
   panelBody.html("");
   data.forEach(x=> {
     Object.entries(x).forEach(([key, value])=>{
@@ -165,6 +171,23 @@ function demoInfo (data){
     })
   })
 }
+
+// Optional
+function gaugeChart (data){
+  var data = [
+    {
+      domain: { x: [0, 1], y: [0, 1] },
+      value: data,
+      title: { text: "Gauge Chart" },
+      type: "indicator",
+      mode: "gauge+number"
+    }
+  ];
+  
+  var layout = { width: 500, height: 400, margin: { t: 0, b: 0 } };
+  Plotly.newPlot('gauge', data, layout);
+}
+
 
 // Call on the function init()
 init();
